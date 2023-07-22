@@ -22,9 +22,9 @@ function App() {
   }, []);
   return (
     <>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing...."}
-      <footer>&copy; {new Date().getFullYear()} Nwitter </footer>
+      {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing...."}      
     </>
+    //<footer>&copy; {new Date().getFullYear()} Nwitter </footer>
   );
 }
 
