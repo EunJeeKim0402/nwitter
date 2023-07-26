@@ -1,86 +1,42 @@
-import React, { useState } from "react";
-import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import Auth from "../routes/Auth";
-import Home from "../routes/Home";
-import Profile from "../routes/Profile";
+import React from "react";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import Auth from "routes/Auth";
+import Home from "routes/Home";
+import Profile from "routes/Profile";
 import Navigation from "components/Navigation";
 
-const AppRouter = ({ isLoggedIn, userObj }) => {
-    // React의 Hook
-    // 함수 컴포넌트가 어떤 값을 유지할 수 있도록 캐시를 만들었는데
-    // 이 캐시를 이용하고자 만든 여러개의 API를 리액트 훅 함수라고 함
-    // useState, useEffect, useContext ... 등등
-    return ( // 아래에 &&은 Navigation이 존재하려면 이것이 true여야한다는 뜻
-        <Router> 
-            {isLoggedIn && <Navigation />}
-            <Switch>
-                {isLoggedIn ? (
-                    <>
-                        <Route exact path="/">
-                            <Home userObj={userObj} />
-                        </Route>
-                        {/* /profile 경로로 Profile 컴포넌트를 렌더링 */}
-                        <Route exact path="/profile">
-                            <Profile userObj={userObj} />
-                        </Route>
-                        {/* /dashboard 경로로 이동 */}
-                        <Redirect from="/dashboard" to="/" />
-                        <Redirect from="*" to="/" />
-                    </>
-                ) : (
-                    <>
-                        <Route exact path="/">
-                            <Auth />
-                        </Route>
-                        <Redirect from="*" to="/" />
-                    </>
-                )}
-            </Switch>
-        </Router>
-    );
+const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
+  return (
+    <Router>
+      {isLoggedIn && <Navigation userObj={userObj} />}
+      <Switch>
+        {isLoggedIn ? (
+          <div
+            style={{
+              maxWidth: 890,
+              width: "100%",
+              margin: "0 auto",
+              marginTop: 80,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Route exact path="/">
+              <Home userObj={userObj} />
+            </Route>
+            <Route exact path="/profile">
+              <Profile userObj={userObj} refreshUser={refreshUser} />
+            </Route>
+          </div>
+        ) : (
+          <>
+            <Route exact path="/">
+              <Auth />
+            </Route>
+          </>
+        )}
+      </Switch>
+    </Router>
+  );
 };
-
 export default AppRouter;
-
-/* 
-import React, { useState } from "react";
-import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import Auth from "../routes/Auth";
-import Home from "../routes/Home";
-import Profile from "../routes/Profile";
-import Navigation from "components/Navigation";
-
-const AppRouter = ({ isLoggedIn, userObj }) => {
-    // React의 Hook
-    // 함수 컴포넌트가 어떤 값을 유지할 수 있도록 캐시를 만들었는데
-    // 이 캐시를 이용하고자 만든 여러개의 API를 리액트 훅 함수라고 함
-    // useState, useEffect, useContext ... 등등
-    return ( // 아래에 &&은 Navigation이 존재하려면 이것이 true여야한다는 뜻
-        <Router> 
-            {isLoggedIn && <Navigation />}
-            <Switch>
-                {isLoggedIn ? (
-                    <>
-                        <Route exact path="/">
-                            <Home userObj={userObj} />
-                        </Route>
-                        <Route exact path="/profile">
-                            <Profile />
-                        </Route>
-                        <Redirect from="*" to="/" />
-                    </>
-                ) : (
-                    <>
-                        <Route exact path="/">
-                            <Auth />
-                        </Route>
-                        <Redirect from="*" to="/" />
-                    </>
-                )}
-            </Switch>
-        </Router>
-    );
-};
-
-export default AppRouter;
- */
